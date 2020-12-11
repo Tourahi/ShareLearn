@@ -1,5 +1,6 @@
 const express = require('express');
-
+const path    = require('path');
+const expHBS    = require('express-handlebars');
 // DevMode only
 const dotenv  = require('dotenv');
 const morgan  = require('morgan');
@@ -8,11 +9,19 @@ const morgan  = require('morgan');
 
 // load the config file
 dotenv.config({path : './config/conf.env'});
-
 const PORT = process.env.PORT || 3030;
+
 const app = express();
 
-
+//templating
+app.engine('.hbs',expHBS(
+  {
+    extname : '.hbs',
+    layoutsDir: './views/layouts',
+    defaultLaout : 'main'
+  }
+));
+app.set('view engine', '.hbs');
 
 // Dev only middlewares
 console.log(process.env.NODE_ENV );
@@ -20,8 +29,12 @@ if(process.env.NODE_ENV = 'development') {
   app.use(morgan('dev'));
 }
 
-app.get('/hello',(req,res) => {
-  res.json({working : "True"});
+//Static folders
+app.set(express.static(path.join(__dirname,'public')));
+
+//Routes
+app.get('/hello',(req,res) => { //For testing only 
+  res.render('index');
 });
 
 app.listen(
