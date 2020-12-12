@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   email : {
     type     : String,
     unique   : true,
-    required : true,
+    // required : true, tested befor the save action
     min      : 6,
     max      : 255,
     validate(val) {
@@ -56,11 +56,12 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// userSchema.pre('save' ,async function (next) {
-//   if(this.isModified('password')) {
-//   }
-//   next();
-// });
+userSchema.pre('save' ,async function (next) {
+  if(this.email == null && this.googleId == null) {
+    throw new Error('Email must be provided.');
+  }
+  next();
+});
 
 
 module.exports = mongoose.model('User' , userSchema);

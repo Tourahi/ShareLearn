@@ -7,8 +7,6 @@ const connectDB = require('./config/dbConnection');
 const dotenv  = require('dotenv');
 const morgan  = require('morgan');
 
-const User = require('./models/User.js');
-
 // load the config file
 dotenv.config({path : './config/conf.env'});
 const PORT = process.env.PORT || 3030;
