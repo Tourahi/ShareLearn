@@ -21,8 +21,13 @@ const userSchema = new mongoose.Schema({
     }
   },
   firstName: {
-  type     : String,
-  required : true
+    type     : String,
+    required : true
+  },
+  displayName: {
+    type     : String,
+    required : true,
+    unique   : true
   },
   lastName: {
     type     : String,
@@ -57,9 +62,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save' ,async function (next) {
-  if(this.email == null && this.googleId == null) {
-    throw new Error('Email must be provided.');
-  }
+
   next();
 });
 
