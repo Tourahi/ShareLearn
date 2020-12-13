@@ -24,14 +24,14 @@ const userSchema = new mongoose.Schema({
     type     : String,
     required : true
   },
+  lastName: {
+    type     : String,
+    required : true
+  },
   displayName: {
     type     : String,
     required : true,
     unique   : true
-  },
-  lastName: {
-    type     : String,
-    required : true
   },
   password : {
     type     : String,
@@ -41,11 +41,12 @@ const userSchema = new mongoose.Schema({
   },
   avatar : {
     buffer : Buffer,
+    link   : String,
     ext    : String
   },
   role : {
     type     : String,
-    required : true,
+    // required : true,
     validate(val) {
       if (!roles.indexOf(val)) {
         throw new Error('Undifined role.');

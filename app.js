@@ -13,6 +13,8 @@ const connectDB = require('./config/dbConnection');
 const dotenv  = require('dotenv');
 const morgan  = require('morgan');
 
+
+
 // load the config file
 dotenv.config({path : './config/conf.env'});
 // passport config
@@ -29,13 +31,14 @@ app.use(bodyParser.json());
 connectDB();
 
 //templating
-app.engine('.hbs',expHBS(
+const hbs = expHBS.create(
   {
     extname : '.hbs',
     layoutsDir: './views/layouts',
-    defaultLaout : 'main'
-  }
-));
+    defaultLaout : 'login'
+  });
+
+app.engine('.hbs',hbs.engine);
 app.set('view engine', '.hbs');
 
 // Dev only middlewares
@@ -44,8 +47,7 @@ if(process.env.NODE_ENV = 'development') {
   app.use(morgan('dev'));
 }
 
-//Static folders
-app.set(express.static(path.join(__dirname,'public')));
+
 
 //store session to mongodb
 app.use(session({
@@ -72,11 +74,13 @@ app.use(methodOverride(function (req, res) {
     return method
   }
 }))
+//Static folder
+app.use(express.static(path.join(__dirname , 'public')));
+
 
 //Routes
-app.get('/hello',(req,res) => { //For testing only
-  res.render('index');
-});
+app.use('/',require('./routes/index'));
+app.use('/auth',require('./routes/auth'));
 
 app.listen(
   PORT,

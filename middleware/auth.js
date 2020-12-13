@@ -1,6 +1,6 @@
 const User = require('../models/User.js');
 const bcrypt = require('bcryptjs');
-const validPassword  = require('../lib/utils_password.js');
+const validPassword  = require('../lib/utils_password.js').validPassword;
 
 // will be used to check before registering the user
 const isUserAlreadyExisting = async (req,res,next) => {
