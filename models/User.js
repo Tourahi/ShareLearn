@@ -1,7 +1,4 @@
 const mongoose  = require('mongoose');
-const validator = require('validator');
-//Defined roles
-const roles     = Object.keys(require('../_helpers/role.js'));
 
 const userSchema = new mongoose.Schema({
   googleId : {
@@ -10,32 +7,20 @@ const userSchema = new mongoose.Schema({
   },
   email : {
     type     : String,
-    unique   : true,
-    // required : true, tested befor the save action
     min      : 6,
-    max      : 255,
-    validate(val) {
-      if(!validator.isEmail(val)) {
-        throw new Error('Invalide email.');
-      }
-    }
+    max      : 255
   },
   firstName: {
     type     : String,
-    required : true
   },
   lastName: {
     type     : String,
-    required : true
   },
   displayName: {
     type     : String,
-    required : true,
-    unique   : true
   },
   password : {
     type     : String,
-    required : true,
     min      : 6,
     max      : 1024
   },
@@ -46,12 +31,6 @@ const userSchema = new mongoose.Schema({
   },
   role : {
     type     : String,
-    // required : true,
-    validate(val) {
-      if (!roles.indexOf(val)) {
-        throw new Error('Undifined role.');
-      }
-    }
   }
 },{
   toObject: {
@@ -63,9 +42,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save' ,async function (next) {
-
+  //TO-DO
   next();
 });
+
 
 
 module.exports = mongoose.model('User' , userSchema);

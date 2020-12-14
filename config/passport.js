@@ -15,13 +15,20 @@ module.exports = function(passport) {
     callbackURL: '/auth/google/callback'
   },authStrategies.google));
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
+  passport.serializeUser(async function(user, done) {
+    // note From : Tourahi Amine
+    // The first time the user my be pending so i've used await here.
+    const User = await user;
+    done(null, User._id);
   });
 
-  passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-      done(err, user);
-    });
+  passport.deserializeUser(function(id, done) {
+    User.findById(id)
+        .then((user) => {
+          done(null, user);
+        })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        });
   });
 }

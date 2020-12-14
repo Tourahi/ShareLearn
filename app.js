@@ -1,12 +1,14 @@
 const express   = require('express');
 const path      = require('path');
 const expHBS    = require('express-handlebars');
-const passport  = require('passport');
 const session   = require('express-session');
 const MongoSessionStore = require('connect-mongo')(session);
 const mongoose          = require('mongoose');
 const methodOverride    = require('method-override');
 const bodyParser        = require('body-parser');
+const passport          = require('passport');
+const flash             = require('connect-flash');
+const MongoStore        = require('connect-mongo')(session);
 //Database related
 const connectDB = require('./config/dbConnection');
 // DevMode only
@@ -17,15 +19,19 @@ const morgan  = require('morgan');
 
 // load the config file
 dotenv.config({path : './config/conf.env'});
-// passport config
-require('./config/passport')(passport);
+
 
 const PORT = process.env.PORT || 3030;
 const app = express();
 
+// passport config
+require('./config/passport')(passport);
+
 //Parser
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
+
+
 
 //Connection to data Database
 connectDB();
@@ -49,17 +55,22 @@ if(process.env.NODE_ENV = 'development') {
 
 
 
-//store session to mongodb
-app.use(session({
-  secret: 'keyboard caty cat',
-  resave: false,
-  saveUninitialized: false,
-  store  : new MongoSessionStore( {mongooseConnection : mongoose.connection })
-}));
 
-//passport middleware
+// Sessions
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+)
+
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+//Connect flash
+app.use(flash());
 
 //encoding && json
 app.use(express.urlencoded({ extended:false }));
@@ -76,6 +87,8 @@ app.use(methodOverride(function (req, res) {
 }))
 //Static folder
 app.use(express.static(path.join(__dirname , 'public')));
+
+
 
 
 //Routes
