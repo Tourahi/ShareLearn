@@ -27,11 +27,41 @@ const app = express();
 // passport config
 require('./config/passport')(passport);
 
-//Parser
-app.use(bodyParser.urlencoded({extended : false}));
-app.use(bodyParser.json());
+const init = () => {
+  //Parser
+  app.use(bodyParser.urlencoded({extended : false}));
+  app.use(bodyParser.json());
+  // Sessions
+  app.use(
+    session({
+      secret: 'keyboard cat',
+      resave: true,
+      saveUninitialized: true,
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    })
+  );
+  // Passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
+  //Connect flash
+  app.use(flash());
+  //encoding && json
+  app.use(express.urlencoded({ extended:false }));
+  app.use(express.json());
+  // Overloading the post method
+  app.use(methodOverride(function (req, res) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      // look in urlencoded POST bodies and delete it
+      var method = req.body._method
+      delete req.body._method
+      return method
+    }
+  }))
+  //Static folder
+  app.use(express.static(path.join(__dirname , 'public')));
+};
 
-
+init();
 
 //Connection to data Database
 connectDB();
@@ -48,49 +78,9 @@ app.engine('.hbs',hbs.engine);
 app.set('view engine', '.hbs');
 
 // Dev only middlewares
-console.log(process.env.NODE_ENV );
 if(process.env.NODE_ENV = 'development') {
   app.use(morgan('dev'));
 }
-
-
-
-
-// Sessions
-app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: true,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-)
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-//Connect flash
-app.use(flash());
-
-//encoding && json
-app.use(express.urlencoded({ extended:false }));
-app.use(express.json());
-
-// Overloading the post method
-app.use(methodOverride(function (req, res) {
-  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-    // look in urlencoded POST bodies and delete it
-    var method = req.body._method
-    delete req.body._method
-    return method
-  }
-}))
-//Static folder
-app.use(express.static(path.join(__dirname , 'public')));
-
-
-
-
 //Routes
 app.use('/',require('./routes/index'));
 app.use('/auth',require('./routes/auth'));
