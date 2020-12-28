@@ -5,7 +5,7 @@ const authStrategies = {};
 //google Strategie
 
 authStrategies.google = async (accessToken,refreshToken,profile,done) => {
-  console.log(profile);
+//  console.log(profile);
   const newUser = {
     googleId    : profile.id,
     firstName   : profile.name.familyName,

@@ -26,7 +26,8 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     const savedUser = await user.save();
-    res.json({user : savedUser._id});
+    // res.json({user : savedUser._id});
+    res.redirect('/dashboard');
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }
@@ -51,7 +52,8 @@ authCtrl.verifyCallback = (username , password , done) => {
 };
 
 authCtrl.loginSuccess = (req , res , next) => {
-  res.status(200).json({ user : req.user});
+  // res.status(200).json({ user : req.user});
+  res.status(200).redirect("/dashboard");
 };
 
 authCtrl.loginFailure = (req , res , next) => {

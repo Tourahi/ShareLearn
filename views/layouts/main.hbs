@@ -2,10 +2,29 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Main layout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/MainStyle.css">
+    <title>ShareLearn</title>
   </head>
   <body>
-    <p>Main layout</p>
-    {{{body}}}
+    {{> _sideNav}}
+    <div class="container">
+      {{{body}}}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.15.0/ckeditor.js"
+    integrity="sha512-bNMnTgKRxN1n+5rgfcf160HT2koHRcwLcSq/3JDOY9R65mja48E4Hh+a+IQXVaY2NoJCVC+pr0qE3Vz194QwnA=="
+    crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      M.Sidenav.init(document.querySelector('.sidenav'));
+      M.FormSelect.init(document.querySelector('#status'));
+
+      CKEDITOR.replace('body',{ });
+    </script>
   </body>
 </html>

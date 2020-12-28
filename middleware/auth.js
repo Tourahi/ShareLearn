@@ -37,7 +37,7 @@ const ensureAuth = (req , res , next) => {
 
 const keepGest = (req , res , next) => {
   if(req.isAuthenticated()) {
-    // res.redirect('/dashboard'); keep users in home page
+    res.redirect('/dashboard'); //keep users in home page
   }else{
     return next();
   }

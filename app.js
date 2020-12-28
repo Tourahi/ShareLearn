@@ -9,6 +9,19 @@ const bodyParser        = require('body-parser');
 const passport          = require('passport');
 const flash             = require('connect-flash');
 const MongoStore        = require('connect-mongo')(session);
+
+//Chat related
+const http    = require('http');
+const socketio = require('socket.io');
+const {
+  generateMsg
+} = require('./lib/messages.js');
+
+const { addUser,
+        removeUser,
+        getUser,
+        getUsersInRoom } = require('./lib/users.js');
+
 //Database related
 const connectDB = require('./config/dbConnection');
 // DevMode only
@@ -23,6 +36,8 @@ dotenv.config({path : './config/conf.env'});
 
 const PORT = process.env.PORT || 3030;
 const app = express();
+
+
 
 // passport config
 require('./config/passport')(passport);
@@ -84,8 +99,61 @@ if(process.env.NODE_ENV = 'development') {
 //Routes
 app.use('/',require('./routes/index'));
 app.use('/auth',require('./routes/auth'));
+app.use('/chating',require('./routes/chat'));
 
-app.listen(
+
+
+//Chat related
+const server = app.listen(
   PORT,
   console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
 );
+
+const io = socketio(server);
+
+const IO = () => {
+  //io handling
+  io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.emit('message',generateMsg("Welcome!","ChatBot"));
+
+    //join for every Room
+    socket.on('join',({username , room}, ack) => {
+        const {error , user} = addUser({id : socket.id , username, room});
+        // Error reporting
+        if(error) {
+          return ack(error);
+        }
+        socket.join(user.room);
+        socket.broadcast.to(user.room).emit('message' , generateMsg(`${user.username} has joined.`,"ChatBot"));
+
+        //Send Room data
+        io.to(user.room).emit('roomData' , {
+          room : user.room,
+          users : getUsersInRoom(user.room)
+        })
+        ack();
+    });
+
+    socket.on('sendMessage',(msg,ack) => {
+      console.log(msg);
+      const user = getUser(socket.id);
+      io.to(user.room).emit('message',generateMsg(msg,user.username));
+      ack();
+    });
+
+    socket.on('disconnect', () => {
+      const user = removeUser(socket.id);
+      if(user) {
+        //Send Room data
+        io.to(user.room).emit('roomData' , {
+          room : user.room,
+          users : getUsersInRoom(user.room)
+        })
+        io.to(user.room).emit('message' ,generateMsg(`${user.username} has left!`));
+      }
+    });
+  });
+};
+
+IO();

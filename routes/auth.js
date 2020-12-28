@@ -33,7 +33,7 @@ router.get('/google' , passport.authenticate('google' ,
 router.get('/google/callback' , passport.authenticate('google' , {
   failureRedirect : '/'
 }) , (req , res) => {
-  res.redirect('/Giverole');
+  res.redirect('/dashboard');
 });
 
 //Lacal Auth

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>LetsTalk</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/discussionStyle.css">
+  </head>
+  <body>
+    <div class="centered-form">
+      <div class="centered-form__box">
+        <h1>Join a Room</h1>
+        <form action="/chating/chat" autocomplete="off">
+          <div class="labelDiv">
+            <label class="label">Display name</label>
+          </div>
+          <input type="text" name="username" placeholder="{{name}}" required>
+          <div class="labelDiv">
+            <label class="label">Room</label>
+          </div>
+          <input type="text" name="room" placeholder="Room" required>
+          <button>Join</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -22,7 +22,7 @@ module.exports = function(passport) {
     const User = await user;
     // console.log("From serializeUser",user);
     if(Array.isArray(user)) {
-      done(null, User[0]._id);
+      done(null, User[0]._id); //Note Tourahi : Here we used findAll in the local auth so is returns a table
     }else {
       done(null, User._id);
     }
