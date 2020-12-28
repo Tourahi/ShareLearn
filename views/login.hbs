@@ -1,8 +1,66 @@
-
+<div class="container">
+  <div class="row card hoverable">
+    <div class="card-content login-card">
+    <h4 class="center black-text">Login</h4>
+      <form class="row s12" action="/auth/login" method="post">
+      <div class="col s12">
+        <div class="input-field">
+          <input type="text" name="username" placeholder="Email*">
+        </div>
+      </div>
+      <div class="col s12">
+      <div class="input-field">
+        <input type="password" name="password" placeholder="Password*">
+      </div>
+      </div>
+      <div class="col s12 center">
+        <button type="submit" class="btn waves-effect waves-light loginBtn">Login<i class="material-icons right">send</i></button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 <div class="divider"></div>
-
 <div class="section">
-  <a href="/auth/google" class='btn red darken-1'>
-    <i class="fab fa-google left">  </i> Log in whit Google
+  <a href="/auth/google" class='btn googleBtn darken-1'>
+    <i class="fab fa-google left">  </i> Log in with Google
   </a>
 </div>
+<div class="section">
+  <a class="waves-effect waves-light btn modal-trigger registerBtn blue" href="#modal1">
+    Or Register To our site
+  </a>
+</div>
+<div id="modal1" class="modal">
+   <div class="modal-content">
+     <h4>Register</h4>
+  <div class="col s6">
+   <form class="" action="/auth/register" method="post">
+     <div class="row">
+    <div class="input-field col s12">
+         <input name="username" type="email" class="validate">
+         <label for="Email">Email</label>
+       </div>
+   <div class="input-field col s12">
+         <input name="firstName" type="text" class="validate">
+         <label for="firstName">firstname</label>
+       </div>
+ <div class="input-field col s12">
+       <input name="lastName" type="text" class="validate">
+       <label for="lastName">lastname</label>
+     </div>
+       <div class="input-field col s12">
+         <input name="password" type="password" class="validate">
+         <label for="password">Password</label>
+       </div>
+    <div class="input-field col s12">
+         <button type="submit" class="waves-effect waves-light btn blue">Register</button>
+       </div>
+     </div>
+     </form>
+    </div>
+   </div>
+   <div class="modal-footer">
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+   </div>
+ </div>

@@ -5,25 +5,24 @@ const validPassword  = require('../lib/utils_password.js').validPassword;
 // will be used to check before registering the user
 const isUserAlreadyExisting = async (req,res,next) => {
   // E short for Exists
-  const emailE       = await User.findOne({req.body.email});
-  const displaynameE = await User.findOne({displayName : req.body.username});
-  if(emailE || displaynameE) return res.status(400).json({err : "User already exist."});
+  const emailE = await User.findOne({email : req.body.username});
+  if(emailE) return res.status(400).json({err : "User already exist."});
   next();
 }
 
 const isUserExisting = async (req,res,next) => {
-  if(req.body.email) {
-    const emailExist = await Luser.findOne({ email : req.body.email });
+  if(req.body.username) {
+    const emailExist = await User.findOne({ email : req.body.username });
     if(!emailExist) return res.status(400).json({err : "email incorrect."});
   }
   next();
 }
 
 const checkPassword = async (req,res,next) => {
-  const user = await User.findOne({displayName : req.body.username});
+  const user = await User.findOne({email : req.body.username});
   const isPassValid = await bcrypt.compare(req.body.password , user.password);
-  if(!isPassValid) return res.status(400).json({err : "incorrect password."});
-  // next(); this should be the last middleware else uncomment this line
+  if(!isPassValid) return res.status(400).json({err : "incorrect password."})
+  next(); //this should be the last middleware else uncomment this line
 }
 
 //@Desc ensure that the unauthenticated user stays at (/)
