@@ -25,7 +25,9 @@ const googleUserValidate = Joi.object({
                 .required(),
   displayName : Joi.string()
                    .required(),
-  avatar : Joi.string(),
+  avatar      : {
+       link : Joi.string(),
+  },
   role   : Joi.string().required()
 });
 
@@ -42,7 +44,10 @@ const RegisterValidationSchema = Joi.object({
                 .required(),
   password : Joi.string()
                 .required(),
-  avatar : Joi.string(),
+  avatar : Joi.object({
+      buffer : Joi.binary().encoding('base64'),
+      ext : Joi.string()
+  }),
   role   : Joi.string().required()
 });
 

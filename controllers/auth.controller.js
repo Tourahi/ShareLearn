@@ -4,6 +4,11 @@ const validPassword = require('../lib/utils_password.js').validPassword;
 const {  RegisterValidationSchema,
          LoginValidationSchema} = require('../models/validations/userValidations.js');
 
+//Upload related
+
+const sharp = require('sharp');
+
+//End Upload related
 const authCtrl = {};
 
 authCtrl.registerCtrl = async function (req , res) {
@@ -11,6 +16,7 @@ authCtrl.registerCtrl = async function (req , res) {
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password , salt);
 
+  //User construction
   const Body = {
     email : req.body.username,
     firstName : req.body.firstName,
@@ -18,6 +24,11 @@ authCtrl.registerCtrl = async function (req , res) {
     displayName : req.body.firstName+" "+req.body.lastName,
     password : req.body.password,
     avatar : "DummyAvatar",
+    avatar : {
+      buffer : await sharp(req.files[0].buffer).resize({width : 96, height : 96})
+              .png().toBuffer(),
+      ext    : req.files[0].originalname.split('.').pop()
+    },
     role : "Contributor"
   }
   const {error} = RegisterValidationSchema.validate(Body);
@@ -26,8 +37,8 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     const savedUser = await user.save();
-    // res.json({user : savedUser._id});
-    res.redirect('/dashboard');
+    res.json({newUser : savedUser.displayName});
+    // res.redirect('/dashboard');
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }
@@ -59,5 +70,17 @@ authCtrl.loginSuccess = (req , res , next) => {
 authCtrl.loginFailure = (req , res , next) => {
   res.status(400).json({ err : 'You are not Authenticated'});
 }
+
+//avatar handeling
+authCtrl.getAvatar = (req,res,next) => {
+  if(!req.user.avatar.link){
+      res.set('Content-Type',`image/${req.user.avatar.ext}`);
+      res.status(200).send(req.user.avatar.buffer);
+  }else {
+    res.status(200).send(req.user.avatar.link);
+  }
+
+  //req.user
+};
 
 module.exports = authCtrl;

@@ -44,7 +44,7 @@ require('./config/passport')(passport);
 
 const init = () => {
   //Parser
-  app.use(bodyParser.urlencoded({extended : false}));
+  app.use(bodyParser.urlencoded({extended : true}));
   app.use(bodyParser.json());
   // Sessions
   app.use(
@@ -100,8 +100,16 @@ if(process.env.NODE_ENV = 'development') {
 app.use('/',require('./routes/index'));
 app.use('/auth',require('./routes/auth'));
 app.use('/chating',require('./routes/chat'));
-
-
+//Error handler
+app.use((err,req,res,next) => {
+  res.status(err.status || 500);
+  res.json({
+    error : {
+      status : err.status || 500,
+      message : err.message
+    }
+  });
+});
 
 //Chat related
 const server = app.listen(

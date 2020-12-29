@@ -20,8 +20,15 @@ router.get('/',keepGest,(req , res) => {
 // @ met/route GET /dashboard
 router.get('/dashboard' ,ensureAuth ,async (req , res) => {
   try {
+    let imge = "";
+    if(req.user.avatar.link) {
+      imge = req.user.avatar.link;
+    }else {
+      imge = "data:image/png;base64,"+req.user.avatar.buffer.toString('base64');
+    }
     res.render('dashboard' , {
       name : req.user.firstName,
+      avatar : imge,
       layout : 'main'
     });
   } catch (err) {

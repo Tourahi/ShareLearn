@@ -11,7 +11,9 @@ authStrategies.google = async (accessToken,refreshToken,profile,done) => {
     firstName   : profile.name.familyName,
     lastName    : profile.name.givenName,
     displayName : profile.displayName,
-    avatar      : profile.photos[0].value,
+    avatar      : {
+        link : profile.photos[0].value,
+    },
     role        : "Contributor"
   };
 

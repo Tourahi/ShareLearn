@@ -35,7 +35,7 @@
    <div class="modal-content">
      <h4>Register</h4>
   <div class="col s6">
-   <form class="" action="/auth/register" method="post">
+   <form class="" action="/auth/register" method="post" enctype="multipart/form-data">
      <div class="row">
     <div class="input-field col s12">
          <input name="username" type="email" class="validate">
@@ -52,6 +52,10 @@
        <div class="input-field col s12">
          <input name="password" type="password" class="validate">
          <label for="password">Password</label>
+       </div>
+       <div class="input-field col s12">
+         <input name="avatar" type="file" class="validate">
+         <label for="avatar">Avatar</label>
        </div>
     <div class="input-field col s12">
          <button type="submit" class="waves-effect waves-light btn blue">Register</button>

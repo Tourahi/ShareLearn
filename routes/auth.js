@@ -2,6 +2,21 @@ const express = require('express');
 const router  = express.Router();
 const passport  = require('passport');
 
+//Upload related
+const multer            = require('multer');
+const registerUpload    = multer({
+  limits : {
+  fileSize : 1000000,
+  },
+  fileFilter(req,file,cb) {
+    console.log(file.originalname);
+    if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
+      return cb(new Error('Only the extensions (png|jpeg|jpg) are acceptable'));
+    }
+    cb(undefined,true);
+  }
+});
+
 //Costume middleware for local users
 const {
   isUserExisting,
@@ -15,7 +30,8 @@ const {
 const {
   registerCtrl,
   loginSuccess,
-  loginFailure
+  loginFailure,
+  getAvatar
 } = require('../controllers/auth.controller.js');
 
 // @desc  Auth whit google
@@ -39,7 +55,7 @@ router.get('/google/callback' , passport.authenticate('google' , {
 //Lacal Auth
 
 //Register
-router.post('/register',isUserAlreadyExisting,registerCtrl);
+router.post('/register',registerUpload.any(),isUserAlreadyExisting,registerCtrl);
 //Login
 router.post('/login',isUserExisting,checkPassword
             ,passport.authenticate('local',
@@ -60,5 +76,9 @@ router.get('/logout' , (req , res) => {
   req.logout();
   res.redirect('/');
 });
+
+//Avatar
+//Get avatar
+router.get('/avatar',ensureAuth,getAvatar);
 
 module.exports = router;

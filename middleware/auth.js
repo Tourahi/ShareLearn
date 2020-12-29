@@ -5,6 +5,8 @@ const validPassword  = require('../lib/utils_password.js').validPassword;
 // will be used to check before registering the user
 const isUserAlreadyExisting = async (req,res,next) => {
   // E short for Exists
+  // console.log(req.body);
+  // console.log(req.files);
   const emailE = await User.findOne({email : req.body.username});
   if(emailE) return res.status(400).json({err : "User already exist."});
   next();

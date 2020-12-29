@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.login-container {
+  width: 400px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+p {
+  margin: 10px 0 !important;
+}
+
+.main {
+  margin-top: 40px;
+}
+
+.avatarIcon {
+  width: 60;
+  height: 60;
+}
+.icon {
+  max-width: 50%;
+  height: auto;
+}
+
+.btn-float {
+  float: left;
+  margin-right: 10px;
+}
