@@ -36,9 +36,8 @@ authCtrl.registerCtrl = async function (req , res) {
   Body.password = hashedPass;
   const user = new User(Body);
   try{
-    const savedUser = await user.save();
-    res.json({newUser : savedUser.displayName});
-    // res.redirect('/dashboard');
+    await user.save();
+    return res.redirect('/dashboard');
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }

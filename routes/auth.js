@@ -36,12 +36,7 @@ const {
 
 // @desc  Auth whit google
 // @met/route GET /auth/google
-router.get('/google' , passport.authenticate('google' ,
-                                {
-                                  scope : ['profile'],
-                                  // session : false
-                                }
-                              ));
+router.get('/google' , passport.authenticate('google' ,{ scope : ['profile'] } ));
 
 
 // @desc  google auth callback
@@ -78,7 +73,8 @@ router.get('/logout' , (req , res) => {
 });
 
 //Avatar
-//Get avatar
+// @desc  get avayar image
+// @met/route GET /auth/avatar
 router.get('/avatar',ensureAuth,getAvatar);
 
 module.exports = router;
