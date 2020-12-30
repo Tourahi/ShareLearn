@@ -16,17 +16,13 @@ const socketio = require('socket.io');
 //Database related
 const connectDB = require('./config/dbConnection');
 // DevMode only
-const dotenv  = require('dotenv');
 const morgan  = require('morgan');
-
-
-
-// load the config file
-dotenv.config({path : './config/conf.env'});
+//app
+const app = express();
 
 //app
 const PORT = process.env.PORT || 3030;
-const app = express();
+
 
 
 
@@ -51,10 +47,6 @@ const hbs = expHBS.create(
 app.engine('.hbs',hbs.engine);
 app.set('view engine', '.hbs');
 
-// Dev only middlewares
-if(process.env.NODE_ENV = 'development') {
-  app.use(morgan('dev'));
-}
 
 //Routes
 app.use('/',require('./routes/index'));
@@ -79,3 +71,8 @@ const server = app.listen(
 // Socket setup
 const io = socketio(server);
 require('./socket')(io);
+
+if(process.env.NODE_ENV = 'test') {
+  // Tourahi note : So i can use app in the testing file
+  module.exports = app;
+}

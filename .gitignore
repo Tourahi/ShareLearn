@@ -1,2 +1,3 @@
 /node_modules
 /config/conf.env
+/config/conf.test.env

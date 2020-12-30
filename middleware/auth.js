@@ -5,21 +5,21 @@ const validPassword  = require('../lib/utils_password.js').validPassword;
 // will be used to check before registering the user
 const isUserAlreadyExisting = async (req,res,next) => {
   // E short for Exists
-  const emailE = await User.findOne({email : req.body.username});
+  const emailE = await User.findOne({email : req.body.email});
   if(emailE) return res.status(400).json({err : "User already exist."});
   next();
 }
 
 const isUserExisting = async (req,res,next) => {
-  if(req.body.username) {
-    const emailExist = await User.findOne({ email : req.body.username });
+  if(req.body.email) {
+    const emailExist = await User.findOne({ email : req.body.email });
     if(!emailExist) return res.status(400).json({err : "email incorrect."});
   }
   next();
 }
 
 const checkPassword = async (req,res,next) => {
-  const user = await User.findOne({email : req.body.username});
+  const user = await User.findOne({email : req.body.email});
   const isPassValid = await bcrypt.compare(req.body.password , user.password);
   if(!isPassValid) return res.status(400).json({err : "incorrect password."})
   next(); //this should be the last middleware else uncomment this line

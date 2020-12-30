@@ -12,18 +12,19 @@ const sharp = require('sharp');
 const authCtrl = {};
 
 authCtrl.registerCtrl = async function (req , res) {
+  console.log(req.body);
+  console.log(req.files);
   //Hashing
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password , salt);
 
   //User construction
   const Body = {
-    email : req.body.username,
+    email : req.body.email,
     firstName : req.body.firstName,
     lastName : req.body.lastName,
     displayName : req.body.firstName+" "+req.body.lastName,
     password : req.body.password,
-    avatar : "DummyAvatar",
     avatar : {
       buffer : await sharp(req.files[0].buffer).resize({width : 96, height : 96})
               .png().toBuffer(),
@@ -37,19 +38,20 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     await user.save();
-    return res.redirect('/dashboard');
+    return res.status(201).send({}); // For testing
+    // return res.send({'/dashboard'});
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }
 };
 
 // verifyCallback for the passport strategy
-authCtrl.verifyCallback = (username , password , done) => {
+authCtrl.verifyCallback = (email , password , done) => {
 
-  User.find({email : username})
+  User.find({email})
       .then(async (user) => {
         if(!user) return done(null, false)
-        const isValid =  await validPassword(username , password);
+        const isValid =  await validPassword(email , password);
         if(isValid) {
           return  done(null, user);
         }else{

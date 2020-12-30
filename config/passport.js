@@ -13,7 +13,7 @@ module.exports = function(passport) {
   },authStrategies.google));
 
   //local
-  const strategy = new localStrategy(verifyCallback);
+  const strategy = new localStrategy({ usernameField: 'email' },verifyCallback);
   passport.use(strategy);
 
   passport.serializeUser(async function(user, done) {
