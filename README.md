@@ -15,12 +15,10 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+[![Contributors][contributors-shield]][https://github.com/maromaroXD/ShareLearn/graphs/contributors]
+[![Forks][forks-shield]][https://github.com/maromaroXD/ShareLearn/network/members]
+[![Issues][issues-shield]][https://github.com/maromaroXD/ShareLearn/issues]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -70,15 +68,13 @@
 ### Built With
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Node.js]: https://nodejs.org/en/
+* [Node.js]: https://nodejs.org/en/	"Node.js"
 
-* [Materializecss]: https://materializecss.com/getting-started.html
-
-  
-
+* [Materializecss]: https://materializecss.com/getting-started.html	"Materializecss"
 
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
