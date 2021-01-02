@@ -59,8 +59,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-* This is a school project, our objective is to create a simple and easy to use app where you can share your school lessons as a teacher of just a normal student who wants to share knowledge.
-* Ceci est un projet scolaire, notre objectif est de créer une application simple et facile à utiliser où vous pouvez partager vos leçons scolaires en tant que professeur d'un élève normal qui souhaite partager des connaissances.
+* This is a school project, our objective is to create a simple and easy to use app where you can share your school lessons as a teacher or just a normal student who wants to share knowledge.
+* Ceci est un projet scolaire, notre objectif est de créer une application simple et facile à utiliser où vous pouvez partager vos leçons scolaires en tant que professeur ou un élève normal qui souhaite partager des connaissances.
 
 ### Built With
 
@@ -138,7 +138,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 [@Email]() - tourahi.amine@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/maromaroXD/ShareLearn)
+Project Link: [ShareLearn](https://github.com/maromaroXD/ShareLearn)
 
 
 
