@@ -136,13 +136,14 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@Email](https://twitter.com/your_username) - tourahi.amine@gmail.com
+[@Email]() - tourahi.amine@gmail.com
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/maromaroXD/ShareLearn)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
+
 ## Acknowledgements
 * TO-DO
 
