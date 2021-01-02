@@ -22,7 +22,17 @@ lessonCtrl.addPOST = async (req,res) => {
 // @ met/route GET /
 lessonCtrl.pLessons = async (req,res) => {
   try {
-    const lessons = await Lesson.find({status : 'public'}).lean();
+    const lessons = await Lesson.find({status : 'public'}).populate('user').lean();
+    
+    lessons.forEach(lesson => {
+      let imge = "";
+      if(lesson.user.avatar.link) {
+        imge = lesson.user.avatar.link;
+      }else {
+        imge = "data:image/png;base64,"+lesson.user.avatar.buffer.toString('base64');
+      }
+      lesson.imge  = imge;
+    });
     res.render('lessons/index',{
       lessons,
       user : req.user.toObject()

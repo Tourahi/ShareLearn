@@ -37,11 +37,24 @@ require('./init')(app,bodyParser,session,MongoStore,mongoose,
 connectDB();
 
 //templating
+//Setting expHBS
+const { formatDate,
+        truncate,
+        stripTags,
+        editIcon,
+        select } = require('./_helpers/hbs');
 const hbs = expHBS.create(
   {
     extname : '.hbs',
     layoutsDir: './views/layouts',
-    defaultLaout : 'login'
+    defaultLaout : 'login',
+    helpers : {
+      formatDate,
+      truncate,
+      stripTags,
+      editIcon,
+      select
+    }
   });
 
 app.engine('.hbs',hbs.engine);
