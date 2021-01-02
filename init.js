@@ -14,7 +14,7 @@
 const path      = require('path');
 
 module.exports = (app,bodyParser,session,MongoStore,mongoose,
-                  passport,flash,express,methodOverride) => {
+                  passport,flash,express,methodOverride,morgan) => {
   //Parser
   app.use(bodyParser.urlencoded({extended : true}));
   app.use(bodyParser.json());
@@ -30,6 +30,7 @@ module.exports = (app,bodyParser,session,MongoStore,mongoose,
   // Passport middleware
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(morgan('tiny'));
   //Connect flash
   app.use(flash());
   //encoding && json

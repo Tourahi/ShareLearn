@@ -31,7 +31,7 @@ require('./config/passport')(passport);
 
 //Initialize app
 require('./init')(app,bodyParser,session,MongoStore,mongoose,
-                  passport,flash,express,methodOverride);
+                  passport,flash,express,methodOverride,morgan);
 
 //Connection to data Database
 connectDB();

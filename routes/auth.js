@@ -69,7 +69,7 @@ router.get('/login-failure',loginFailure);
 // @met/route GET /auth/logout
 router.get('/logout' , (req , res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/dashboard');
 });
 
 //Avatar

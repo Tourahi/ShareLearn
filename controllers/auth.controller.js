@@ -63,7 +63,7 @@ authCtrl.verifyCallback = (email , password , done) => {
 
 authCtrl.loginSuccess = (req , res , next) => {
   // res.status(200).json({ user : req.user});
-  res.status(200).redirect("/dashboard");
+  res.redirect("/");
 };
 
 authCtrl.loginFailure = (req , res , next) => {
