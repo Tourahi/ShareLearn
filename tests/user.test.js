@@ -3,6 +3,8 @@ const app     = require('../app');
 const User    = require('../models/User');
 
 
+jest.useFakeTimers();
+
 const  {
   userOneId,
   localUserOne,

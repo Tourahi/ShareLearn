@@ -53,10 +53,16 @@
          <input name="password" type="password" class="validate">
          <label for="password">Password</label>
        </div>
-       <div class="input-field col s12">
-         <input name="avatar" type="file" class="validate">
-         <label for="avatar">Avatar</label>
-       </div>
+       <div class = "file-field col s12">
+      	<div class = "btn">
+      		<span>Avatar</span>
+      		<input name="avatar" type = "file" />
+      	</div>
+      	<div class = "file-path-wrapper">
+      		<input class = "file-path validate" type = "text"
+      		placeholder = "Upload file.(png .jpeg .jpg)" />
+      	</div>
+      </div>
     <div class="input-field col s12">
          <button type="submit" class="waves-effect waves-light btn blue">Register</button>
        </div>

@@ -12,8 +12,6 @@ const sharp = require('sharp');
 const authCtrl = {};
 
 authCtrl.registerCtrl = async function (req , res) {
-  console.log(req.body);
-  console.log(req.files);
   //Hashing
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password , salt);
@@ -38,8 +36,8 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     await user.save();
-    return res.status(201).send({}); // For testing
-    // return res.send({'/dashboard'});
+    //return res.status(201).send({}); // For testing
+    return res.status(200).redirect("/dashboard");
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }

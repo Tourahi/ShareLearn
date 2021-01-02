@@ -52,6 +52,7 @@ app.set('view engine', '.hbs');
 app.use('/',require('./routes/index'));
 app.use('/auth',require('./routes/auth'));
 app.use('/chating',require('./routes/chat'));
+app.use('/lessons',require('./routes/lesson'));
 //Error handler
 app.use((err,req,res,next) => {
   res.status(err.status || 500);
