@@ -65,9 +65,18 @@
 ### Built With
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Node.js]: https://nodejs.org/en/	"Node.js"
 
-* [Materializecss]: https://materializecss.com/getting-started.html	"Materializecss"
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="https://nodejs.org/en/">Node.js</a>
+    </li>
+    <li>
+      <a href="https://materializecss.com/getting-started.html">Materializecss</a>
+    </li>
+  </ol>
+</details>
 
 
 <!-- GETTING STARTED -->
