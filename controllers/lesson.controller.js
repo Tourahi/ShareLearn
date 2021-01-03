@@ -23,7 +23,7 @@ lessonCtrl.addPOST = async (req,res) => {
 lessonCtrl.pLessons = async (req,res) => {
   try {
     const lessons = await Lesson.find({status : 'public'}).populate('user').lean();
-    
+
     lessons.forEach(lesson => {
       let imge = "";
       if(lesson.user.avatar.link) {
@@ -79,13 +79,24 @@ lessonCtrl.editL = async (req,res) => {
 lessonCtrl.Lupdate = async (req,res) => {
   try{
     let lesson = await Lesson.findById(req.params.id).lean();
-    if(!story) {
+    if(!lesson) {
         return res.render('error/404');
     }
     if(lesson.user != req.user.id) {
       return res.redirect('/lessons');
     }else{
-      // TO-DO : UPDATE
+      req.body.files = req.files;
+      req.body.user = req.user.id;
+      const Oldfiles = lesson.files;
+      let allFiles = Oldfiles.concat(req.body.files);
+      req.body.files = allFiles;
+      lesson = await Lesson.findOneAndUpdate(
+        { _id : req.params.id },
+        req.body,
+        {
+          new : true,
+          runValidators : true,
+        });
       res.redirect('/dashboard');
     }
   }catch(e){

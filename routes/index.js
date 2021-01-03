@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const Lesson = require('../models/Lesson');
 
 //Costume middleware for local users
 const {
@@ -26,10 +27,12 @@ router.get('/dashboard' ,ensureAuth ,async (req , res) => {
     }else {
       imge = "data:image/png;base64,"+req.user.avatar.buffer.toString('base64');
     }
+    const lessons = await Lesson.find({user : req.user.id}).lean();
     res.render('dashboard' , {
       name : req.user.firstName,
       avatar : imge,
-      layout : 'main'
+      lessons : lessons,
+      layout : 'main',
     });
   } catch (err) {
     res.render('error/500');

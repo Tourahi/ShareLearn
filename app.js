@@ -1,10 +1,10 @@
+const bodyParser        = require('body-parser');
 const express   = require('express');
 const expHBS    = require('express-handlebars');
 const session   = require('express-session');
 const MongoSessionStore = require('connect-mongo')(session);
 const mongoose          = require('mongoose');
 const methodOverride    = require('method-override');
-const bodyParser        = require('body-parser');
 const passport          = require('passport');
 const flash             = require('connect-flash');
 const MongoStore        = require('connect-mongo')(session);
@@ -23,15 +23,20 @@ const app = express();
 //app
 const PORT = process.env.PORT || 3030;
 
-
-
-
 // passport config
 require('./config/passport')(passport);
 
+//Parser
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
+
+
 //Initialize app
-require('./init')(app,bodyParser,session,MongoStore,mongoose,
-                  passport,flash,express,methodOverride,morgan);
+require('./init')(app,session,MongoStore,mongoose,
+                  passport,flash,express,morgan,methodOverride);
+
+
 
 //Connection to data Database
 connectDB();
@@ -59,7 +64,6 @@ const hbs = expHBS.create(
 
 app.engine('.hbs',hbs.engine);
 app.set('view engine', '.hbs');
-
 
 //Routes
 app.use('/',require('./routes/index'));
