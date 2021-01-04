@@ -77,6 +77,7 @@ lessonCtrl.editL = async (req,res) => {
 // @desc  Update/Update a lesson
 // @ met/route PUT lessons/:id
 lessonCtrl.Lupdate = async (req,res) => {
+  // console.log(req.body.delfiles);
   try{
     let lesson = await Lesson.findById(req.params.id).lean();
     if(!lesson) {
@@ -89,6 +90,11 @@ lessonCtrl.Lupdate = async (req,res) => {
       req.body.user = req.user.id;
       const Oldfiles = lesson.files;
       let allFiles = Oldfiles.concat(req.body.files);
+      if(req.body.delfiles) {
+        allFiles = allFiles.filter(function(e) {
+          return !req.body.delfiles.includes(e.originalname);
+        });
+      }
       req.body.files = allFiles;
       lesson = await Lesson.findOneAndUpdate(
         { _id : req.params.id },

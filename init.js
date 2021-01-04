@@ -26,7 +26,7 @@ module.exports = (app,session,MongoStore,mongoose,
   );
 
   // Overloading the post method
-  // app.use(methodOverride(methodeoverride));
+  app.use(methodOverride(methodeoverride));
 
   // Passport middleware
   app.use(passport.initialize());

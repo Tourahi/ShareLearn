@@ -34,13 +34,18 @@
          <div class = "file-path-wrapper">
            <input class = "file-path validate" type = "text"
            placeholder = "New files" />
-           {{#each lesson.files}}
-           <input class = "file-path validate" type = "text"
-           placeholder = "{{originalname}}" />
-           {{/each}}
          </div>
        </div>
-
+       <div class="row">
+           <div class="input-field">
+               <select id="delfiles" name="delfiles" multiple>
+                 {{#each lesson.files}}
+                   <option value="{{originalname}}" selected>{{originalname}}</option>
+                 {{/each}}
+               </select>
+               <label for="delfiles">Files to delete</label>
+           </div>
+       </div>
         <div class="row">
             <input type="submit" value="Save" class="btn">
             <a href="/dashboard" class="btn orange">Cancel</a>

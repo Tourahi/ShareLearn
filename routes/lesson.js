@@ -31,5 +31,5 @@ router.get('/add',ensureAuth, lessonCtrl.add);
 router.post('/',filesUpload.any(),ensureAuth, lessonCtrl.addPOST);
 router.get('/edit/:id',ensureAuth,lessonCtrl.editL);
 router.post('/:id',filesUpload.any(),ensureAuth,lessonCtrl.Lupdate);
-
+router.delete('/:id',ensureAuth,lessonCtrl.Ldelete);
 module.exports = router;
