@@ -24,10 +24,8 @@ module.exports = (app,session,MongoStore,mongoose,
       store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
   );
-
   // Overloading the post method
   app.use(methodOverride(methodeoverride));
-
   // Passport middleware
   app.use(passport.initialize());
   app.use(passport.session());

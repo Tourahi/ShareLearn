@@ -12,7 +12,7 @@ const {
 } = require('../middleware/auth.js');
 
 //Upload related
-const multer            = require('multer');
+const multer         = require('multer');
 const filesUpload    = multer({
   limits : {
   fileSize : 7000000,

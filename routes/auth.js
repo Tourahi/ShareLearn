@@ -42,9 +42,9 @@ router.get('/google' , passport.authenticate('google' ,{ scope : ['profile'] } )
 // @desc  google auth callback
 // @met/route GET /auth/google/dashboard
 router.get('/google/callback' , passport.authenticate('google' , {
-  failureRedirect : '/'
+  failureRedirect : '/dashboard'
 }) , (req , res) => {
-  res.redirect('/dashboard');
+  res.redirect('/');
 });
 
 //Lacal Auth

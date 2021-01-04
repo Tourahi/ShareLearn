@@ -18,15 +18,15 @@ module.exports = {
     return input.replace(/<(?:.|\n)*?>/gm, '')
   },
   editIcon: function (storyUser, loggedUser, storyId, floating = false) {
-  if (storyUser._id.toString() == loggedUser._id.toString()) {
-    if (floating) {
-      return `<a href="/lessons/edit/${storyId}" class="btn-floating halfway-fab blue"><i class="fas fa-edit fa-small"></i></a>`
+    if (storyUser._id.toString() == loggedUser._id.toString()) {
+      if (floating) {
+        return `<a href="/lessons/edit/${storyId}" class="btn-floating halfway-fab blue"><i class="fas fa-edit fa-small"></i></a>`
+      } else {
+        return `<a href="/lessons/edit/${storyId}"><i class="fas fa-edit"></i></a>`
+      }
     } else {
-      return `<a href="/lessons/edit/${storyId}"><i class="fas fa-edit"></i></a>`
+      return ''
     }
-  } else {
-    return ''
-  }
 },
 select: function (selected, options) {
   return options

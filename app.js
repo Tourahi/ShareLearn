@@ -30,13 +30,9 @@ require('./config/passport')(passport);
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
-
-
 //Initialize app
 require('./init')(app,session,MongoStore,mongoose,
                   passport,flash,express,morgan,methodOverride);
-
-
 
 //Connection to data Database
 connectDB();
@@ -90,7 +86,7 @@ const server = app.listen(
 const io = socketio(server);
 require('./socket')(io);
 
-if(process.env.NODE_ENV = 'test') {
-  // Tourahi note : So i can use app in the testing file
+if(process.env.NODE_ENV == 'test') {
+  //Tourahi note : So i can use app in the testing file
   module.exports = app;
 }

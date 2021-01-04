@@ -36,8 +36,8 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     await user.save();
-    //return res.status(201).send({}); // For testing
-    return res.status(200).redirect("/dashboard");
+    return res.status(201).send({}); // For testing
+    // return res.status(200).redirect("/dashboard");
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }
@@ -63,6 +63,7 @@ authCtrl.verifyCallback = (email , password , done) => {
 
 authCtrl.loginSuccess = (req , res , next) => {
   // res.status(200).json({ user : req.user});
+  console.log("Hit");
   res.redirect("/");
 };
 
