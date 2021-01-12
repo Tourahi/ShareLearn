@@ -11,7 +11,9 @@
   </head>
   <body>
     {{> _sideNav}}
-    {{> _add_btn}}
+    {{#if allowAdd}}
+      {{> _add_btn}}
+    {{/if}}
     <div class="container">
       <div class="main">
         {{{body}}}

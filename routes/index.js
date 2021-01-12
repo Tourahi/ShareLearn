@@ -33,6 +33,7 @@ router.get('/dashboard' ,ensureAuth ,async (req , res) => {
       avatar : imge,
       lessons : lessons,
       layout : 'main',
+      allowAdd : true
     });
   } catch (err) {
     res.render('error/500');

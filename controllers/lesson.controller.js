@@ -1,5 +1,5 @@
 const Lesson   = require('../models/Lesson.js');
-
+const sharp = require('sharp');
 
 
 const lessonCtrl = {};
@@ -8,7 +8,13 @@ const lessonCtrl = {};
 // @ met/route POST /
 lessonCtrl.addPOST = async (req,res) => {
   try {
-    req.body.files = req.files;
+    for(i = 0;i < req.files.length;i++) {
+      console.log(req.files[i].originalname);
+      req.body.files[i] = {
+          buffer : req.files[i].buffer,
+          filename : req.files[i].filename
+      }
+    }
     req.body.user = req.user.id;
     await Lesson.create(req.body);
     res.redirect('/dashboard');
@@ -35,6 +41,7 @@ lessonCtrl.pLessons = async (req,res) => {
     });
     res.render('lessons/index',{
       lessons,
+      allowAdd : true,
       user : req.user.toObject()
     })
   }catch(e){
@@ -62,7 +69,7 @@ lessonCtrl.editL = async (req,res) => {
       res.render('error/404');
     }
     if(lesson.user != req.user.id){
-      return res.redirect('/lessons');
+      return res.redirect('/lessons',{allowAdd : true});
     }else{
       res.render('lessons/edit', {
         lesson
@@ -95,7 +102,13 @@ lessonCtrl.Lupdate = async (req,res) => {
           return !req.body.delfiles.includes(e.originalname);
         });
       }
-      req.body.files = allFiles;
+      for(i = 0;i < allFiles.length;i++) {
+        console.log(allFiles[i].originalname);
+        req.body.files[i] = {
+            buffer : allFiles[i].buffer,
+            filename : allFiles[i].filename
+        }
+      }
       lesson = await Lesson.findOneAndUpdate(
         { _id : req.params.id },
         req.body,
@@ -111,13 +124,89 @@ lessonCtrl.Lupdate = async (req,res) => {
   }
 };
 
+// @desc    Show single lesson
+// @route   GET lessons/:id
+lessonCtrl.showSingle = async (req,res) => {
+  try{
+    let lesson = await Lesson.findById(req.params.id).populate('user').lean();
+    console.log(lesson.user._id);
+    let _id = lesson.user._id;
+    if(!lesson) return res.render('error/404');
+    if (_id != req.user.id && lesson.status == 'private') {
+      res.render('error/404');
+    } else {
+      res.render('lessons/show', {
+        lesson,
+        user : req.user.toObject()
+      })
+    }
+  }catch(e) {
+    console.error(err);
+    res.render('error/404');
+  }
+};
+
+
+
 // @desc  DELETE/DELETE a lesson page
 // @ met/route DELETE lessons/:id
 lessonCtrl.Ldelete = async (req,res) => {
   try{
     await Lesson.remove({_id : req.params.id});
-    res.redirect('/dashboard');
+    res.redirect('/dashboard',{allowAdd : true});
   }catch(e){
+    res.render('error/500');
+  }
+};
+
+lessonCtrl.showUserLessons = async (req,res) => {
+  try {
+    console.log(req.params,req.params.userId);
+    const lessons = await Lesson.find({
+      user: req.params.id,
+      status: 'public',
+    })
+      .populate('user')
+      .lean()
+
+    lessons.forEach(lesson => {
+      let imge = "";
+      if(lesson.user.avatar.link) {
+        imge = lesson.user.avatar.link;
+      }else {
+        imge = "data:image/png;base64,"+lesson.user.avatar.buffer.toString('base64');
+      }
+      lesson.imge  = imge;
+    });
+
+    res.render('lessons/index', {
+      lessons,
+      allowAdd : true,
+      user : req.user.toObject()
+    })
+  } catch (err) {
+    console.error(err);
+    res.render('error/500');
+  };
+};
+
+
+// @desc  Debug
+// @ met/route DELETE lessons/DEBUG/:id
+lessonCtrl.DEBUG = async (req,res) => {
+  try{
+    let lesson = await Lesson.findById(req.params.id).populate('user').lean();
+    let file = lesson.files[0];
+    res.set({
+      'Cache-control': 'no-cache',
+      'Content-type': 'image/png',
+      'Content-disposition': 'attachment; filename=' + file.filename
+    });
+    res.status(200).send(file.buffer);
+
+    // res.redirect('/dashboard',{allowAdd : true});
+  }catch(e){
+    console.log(e);
     res.render('error/500');
   }
 };

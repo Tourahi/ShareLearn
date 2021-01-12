@@ -36,8 +36,8 @@ authCtrl.registerCtrl = async function (req , res) {
   const user = new User(Body);
   try{
     await user.save();
-    return res.status(201).send({}); // For testing
-    // return res.status(200).redirect("/dashboard");
+    // return res.status(201).send({}); // For testing
+    return res.status(200).redirect("/dashboard", {allowAdd : true});
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }
@@ -63,7 +63,6 @@ authCtrl.verifyCallback = (email , password , done) => {
 
 authCtrl.loginSuccess = (req , res , next) => {
   // res.status(200).json({ user : req.user});
-  console.log("Hit");
   res.redirect("/");
 };
 
@@ -74,7 +73,11 @@ authCtrl.loginFailure = (req , res , next) => {
 //avatar handeling
 authCtrl.getAvatar = (req,res,next) => {
   if(!req.user.avatar.link){
-      res.set('Content-Type',`image/${req.user.avatar.ext}`);
+      res.set({
+        'Cache-control': 'no-cache',
+        'Content-type': 'image/jpeg',
+        'Content-disposition': 'attachment; filename=' + req.user.firstName+".png"
+      });
       res.status(200).send(req.user.avatar.buffer);
   }else {
     res.status(200).send(req.user.avatar.link);

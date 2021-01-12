@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col s12 m8">
+        <h3>{{lesson.title}}
+          {{{editIcon lesson.user user lesson._id }}}
+        </h3>
+        <div class="card lesson">
+            <div class="card-content">
+                <span class="card-title">{{formatDate date 'MMMM Do YYYY, h:mm:ss a'}}</span>
+                {{{lesson.body}}}
+            </div>
+            <div class="video-info-container center">
+              <article class="stats-item item-views">created : {{formatDate lesson.createdAt 'MMMM Do YYYY, h:mm:ss a'}}</article>
+            </div>
+        </div>
+        <div class="card-action center-align">
+          <a href="/chating/chat?username={{lesson.user.displayName}}&room={{lesson.title}}" class="btn grey">Discussion</a>
+        </div>
+
+
+    </div>
+
+    <div class="col s12 m4">
+        <div class="card center-align">
+            <div class="card-content">
+                <span class="card-title">{{lesson.user.displayName}}</span>
+                <img src="{{lesson.user.image}}" class="circle responsive-img img-small">
+            </div>
+            <div class="card-action">
+                <a href="/lessons/user/{{lesson.user._id}}">More From {{lesson.user.firstName}}</a>
+            </div>
+        </div>
+    </div>
+</div>
