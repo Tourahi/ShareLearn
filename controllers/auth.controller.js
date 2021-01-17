@@ -37,7 +37,7 @@ authCtrl.registerCtrl = async function (req , res) {
   try{
     await user.save();
     // return res.status(201).send({}); // For testing
-    return res.status(200).redirect("/dashboard", {allowAdd : true});
+    return res.status(200).redirect("/dashboard");
   }catch(e){
     return res.status(500).json({err :"Server Error Unable to save the user."});
   }

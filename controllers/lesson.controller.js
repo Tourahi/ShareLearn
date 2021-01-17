@@ -123,6 +123,7 @@ lessonCtrl.showSingle = async (req,res) => {
   try{
     let lesson = await Lesson.findById(req.params.id).populate('user').lean();
     let _id = lesson.user._id;
+    console.log(req.user);
     if(!lesson) return res.render('error/404');
     if (_id != req.user.id && lesson.status == 'private') {
       res.render('error/404');

@@ -67,19 +67,19 @@ app.use('/auth',require('./routes/auth'));
 app.use('/chating',require('./routes/chat'));
 app.use('/lessons',require('./routes/lesson'));
 //Error handler
-// app.use((err,req,res,next) => {
-//   res.status(err.status || 500);
-//   res.json({
-//     error : {
-//       status : err.status || 500,
-//       message : err.message
-//     }
-//   });
-// });
+app.use((err,req,res,next) => {
+  res.status(err.status || 500);
+  res.json({
+    error : {
+      status : err.status || 500,
+      message : err.message
+    }
+  });
+});
 
 const server = app.listen(
   PORT,
-  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
+  console.log(`Server is running on port ${PORT}.`)
 );
 
 // Socket setup

@@ -19,7 +19,7 @@ const filesUpload    = multer({
   },
   fileFilter(req,file,cb) {
     console.log(file.originalname);
-    if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
+    if (!file.originalname.match(/\.(png|jpeg|jpg|pdf)$/)) {
       return cb(new Error('Only the extensions (png|jpeg|jpg) are acceptable'));
     }
     cb(undefined,true);
