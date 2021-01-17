@@ -35,4 +35,5 @@ router.get('/user/:id',ensureAuth,lessonCtrl.showUserLessons);
 router.post('/:id',filesUpload.any(),ensureAuth,lessonCtrl.Lupdate);
 router.delete('/:id',ensureAuth,lessonCtrl.Ldelete);
 router.get('/DEBUG/:id',ensureAuth,lessonCtrl.DEBUG);
+router.get('/download/:id/:filename',ensureAuth,lessonCtrl.download);
 module.exports = router;

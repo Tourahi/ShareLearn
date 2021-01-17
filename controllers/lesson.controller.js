@@ -8,12 +8,10 @@ const lessonCtrl = {};
 // @ met/route POST /
 lessonCtrl.addPOST = async (req,res) => {
   try {
+    req.body.files  = req.files;
     for(i = 0;i < req.files.length;i++) {
-      console.log(req.files[i].originalname);
-      req.body.files[i] = {
-          buffer : req.files[i].buffer,
-          filename : req.files[i].filename
-      }
+      req.body.files.buffer = await sharp(req.body.files[i].buffer).resize({width : 200, height : 200})
+                              .png().toBuffer();
     }
     req.body.user = req.user.id;
     await Lesson.create(req.body);
@@ -71,6 +69,7 @@ lessonCtrl.editL = async (req,res) => {
     if(lesson.user != req.user.id){
       return res.redirect('/lessons',{allowAdd : true});
     }else{
+      console.log(lesson);
       res.render('lessons/edit', {
         lesson
       });
@@ -102,13 +101,7 @@ lessonCtrl.Lupdate = async (req,res) => {
           return !req.body.delfiles.includes(e.originalname);
         });
       }
-      for(i = 0;i < allFiles.length;i++) {
-        console.log(allFiles[i].originalname);
-        req.body.files[i] = {
-            buffer : allFiles[i].buffer,
-            filename : allFiles[i].filename
-        }
-      }
+      req.body.files = allFiles;
       lesson = await Lesson.findOneAndUpdate(
         { _id : req.params.id },
         req.body,
@@ -129,7 +122,6 @@ lessonCtrl.Lupdate = async (req,res) => {
 lessonCtrl.showSingle = async (req,res) => {
   try{
     let lesson = await Lesson.findById(req.params.id).populate('user').lean();
-    console.log(lesson.user._id);
     let _id = lesson.user._id;
     if(!lesson) return res.render('error/404');
     if (_id != req.user.id && lesson.status == 'private') {
@@ -137,6 +129,7 @@ lessonCtrl.showSingle = async (req,res) => {
     } else {
       res.render('lessons/show', {
         lesson,
+        id : lesson._id,
         user : req.user.toObject()
       })
     }
@@ -152,8 +145,8 @@ lessonCtrl.showSingle = async (req,res) => {
 // @ met/route DELETE lessons/:id
 lessonCtrl.Ldelete = async (req,res) => {
   try{
-    await Lesson.remove({_id : req.params.id});
-    res.redirect('/dashboard',{allowAdd : true});
+    await Lesson.deleteOne({_id : req.params.id});
+    res.redirect('/dashboard');
   }catch(e){
     res.render('error/500');
   }
@@ -200,11 +193,29 @@ lessonCtrl.DEBUG = async (req,res) => {
     res.set({
       'Cache-control': 'no-cache',
       'Content-type': 'image/png',
-      'Content-disposition': 'attachment; filename=' + file.filename
+      'Content-disposition': 'attachment; filename=' + file.originalname
     });
     res.status(200).send(file.buffer);
+  }catch(e){
+    console.log(e);
+    res.render('error/500');
+  }
+};
 
-    // res.redirect('/dashboard',{allowAdd : true});
+lessonCtrl.download = async (req,res) => {
+  try{
+    let lesson = await Lesson.findById(req.params.id).populate('user').lean();
+    let file = lesson.files[0];
+    for(i = 0;i < lesson.files.length;i++) {
+      if(req.params.filename == lesson.files[i].originalname) {
+        res.set({
+          'Cache-control': 'no-cache',
+          'Content-type': 'image/png',
+          'Content-disposition': 'attachment; filename=' + lesson.files[i].originalname
+        });
+        res.status(200).send(file.buffer);
+      }
+    }
   }catch(e){
     console.log(e);
     res.render('error/500');

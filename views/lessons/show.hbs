@@ -15,8 +15,13 @@
         <div class="card-action center-align">
           <a href="/chating/chat?username={{lesson.user.displayName}}&room={{lesson.title}}" class="btn grey">Discussion</a>
         </div>
-
-
+        <div class="row">
+            <div class="input-field">
+                  {{#each lesson.files}}
+                    <a class="waves-effect waves-light btn-large" href="/lessons/download/{{../id}}/{{originalname}}">Download : {{originalname}}</a>
+                  {{/each}}
+            </div>
+        </div>
     </div>
 
     <div class="col s12 m4">

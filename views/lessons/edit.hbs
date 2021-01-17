@@ -40,7 +40,7 @@
            <div class="input-field">
                <select id="delfiles" name="delfiles" multiple>
                  {{#each lesson.files}}
-                   <option value="{{filename}}" selected>{{filename}}</option>
+                   <option value="{{originalname}}" selected>{{originalname}}</option>
                  {{/each}}
                </select>
                <label for="delfiles">Files to delete</label>
