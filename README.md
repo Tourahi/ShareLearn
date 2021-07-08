@@ -24,8 +24,6 @@
 
   <h3 align="center">ShareLearn</h3>
 
-  <h5 align="center">Work in progress</h5>
-
 </p>
 
 
